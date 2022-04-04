@@ -10,3 +10,5 @@
     name: fish
     state: present
     update_cache: yes
+
+- import_tasks: fisher.yml

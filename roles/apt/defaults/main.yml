@@ -5,6 +5,7 @@ packages_to_install:
   - curl
   - fzf
   - jq
+  - tree
   - wget
 
 packages_to_remove: []

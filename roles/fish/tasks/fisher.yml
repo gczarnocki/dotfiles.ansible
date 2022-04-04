@@ -1,0 +1,33 @@
+- name: Create '.dotfiles' directory
+  file:
+    path: /home/gczar/.dotfiles
+    state: absent
+    owner: gczar
+    group: gczar
+    mode: '0700'
+
+- name: Get information about 'fish_plugins' file
+  stat:
+    path: /home/gczar/.config/fish/fish_plugins
+  register: fish_plugins
+
+- name: Remove old 'fish_plugins' file (if regular file)
+  file:
+    path: /home/gczar/.config/fish/fish_plugins
+    state: absent
+  when: fish_plugins.stat.exists and fish_plugins.stat.isreg
+
+- name: Copy 'fish_plugins' file
+  copy:
+    src: /home/gczar/Development/dotfiles.ansible/roles/fish/files/fish_plugins
+    dest: /home/gczar/.config/fish/fish_plugins
+    owner: gczar
+    group: gczar
+
+# TODO: Doesn't install new plugins if added to `fish_plugins` file
+- name: Install 'fisher'
+  shell: 
+    cmd: |
+      curl -sL https://git.io/fisher | source && \
+      fisher update
+    executable: /usr/bin/fish
