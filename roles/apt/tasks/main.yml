@@ -1,0 +1,14 @@
+---
+# tasks file for apt
+
+- name: Install packages via 'apt'
+  apt:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ packages_to_install }}"
+
+- name: Remove packages via 'apt'
+  apt:
+    name: "{{ item }}"
+    state: absent
+  loop: "{{ packages_to_remove }}"
