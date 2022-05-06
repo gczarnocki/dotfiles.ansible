@@ -1,0 +1,6 @@
+---
+# tasks file for base
+
+- import_tasks: packages.yml
+
+- import_tasks: directories.yml

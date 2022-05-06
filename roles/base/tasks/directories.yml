@@ -1,0 +1,16 @@
+---
+- name: Create '~/.ssh' directory
+  file:
+    path: "{{ local_user_home }}/.ssh/"
+    state: directory
+    mode: 0755
+    owner: "{{ local_user }}"
+    group: "{{ local_user }}"
+
+- name: Create '~/.ssh/environment' file
+  file:
+    path: "{{ local_user_home }}/.ssh/environment"
+    state: touch
+    mode: 0600
+    owner: "{{ local_user }}"
+    group: "{{ local_user }}"
