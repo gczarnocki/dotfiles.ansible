@@ -1,5 +1,5 @@
 - hosts: all
   connection: local
   roles:
+    - 'roles/base'
     - 'roles/fish'
-    - 'roles/apt'
