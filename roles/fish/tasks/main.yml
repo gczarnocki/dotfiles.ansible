@@ -1,14 +1,29 @@
 ---
 # tasks file for fish
 
+- name: Install 'dirmngr' package via 'apt'
+  apt:
+    name: dirmngr
+    state: present
+    update_cache: true
+
 - name: Add 'fish' repository from PPA
   ansible.builtin.apt_repository:
     repo: ppa:fish-shell/release-3
 
 - name: Update repositories cache and install 'fish' shell
-  apt:
+  ansible.builtin.apt:
     name: fish
     state: present
     update_cache: yes
+
+- name: Change default shell to 'fish'
+  user:
+    name: "{{ local_user }}"
+    shell: /usr/bin/fish
+
+- import_tasks: fish_config.yml
+
+- import_tasks: fish_aliases.yml
 
 - import_tasks: fisher.yml

@@ -1,0 +1,13 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    local_user: "{{ lookup('env', 'LOCAL_USER') }}"
+    local_user_home: "{{ lookup('env', 'LOCAL_USER_HOME') }}"
+  tasks:
+    - name: "Include 'base' role (prerequisites)"
+      include_role:
+        name: base
+    - name: "Include 'fish' role"
+      include_role:
+        name: fish

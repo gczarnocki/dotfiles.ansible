@@ -1,0 +1,23 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  tasks:
+    - name: Check if 'fish' is installed
+      ansible.builtin.apt:
+        name: fish
+        state: present
+    - name: Check if 'fisher' is installed
+      shell:
+        cmd: fisher
+        executable: /usr/bin/fish
+      changed_when: false
+    - name: Check if aliases are present  
+      shell:
+        cmd: abbr -l
+        executable: /usr/bin/fish
+      become_user: "{{ LOCAL_USER }}"
+      register: aliases
+      failed_when: aliases | length == 0

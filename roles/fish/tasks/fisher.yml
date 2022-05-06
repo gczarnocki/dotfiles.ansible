@@ -1,33 +1,41 @@
-- name: Create '.dotfiles' directory
-  file:
-    path: /home/gczar/.dotfiles
-    state: absent
-    owner: gczar
-    group: gczar
-    mode: '0700'
-
+---
 - name: Get information about 'fish_plugins' file
   stat:
-    path: /home/gczar/.config/fish/fish_plugins
+    path: "{{ local_user_home }}/.config/fish/fish_plugins"
   register: fish_plugins
 
 - name: Remove old 'fish_plugins' file (if regular file)
   file:
-    path: /home/gczar/.config/fish/fish_plugins
+    path: "{{ local_user_home }}/.config/fish/fish_plugins"
     state: absent
   when: fish_plugins.stat.exists and fish_plugins.stat.isreg
 
 - name: Copy 'fish_plugins' file
   copy:
-    src: /home/gczar/Development/dotfiles.ansible/roles/fish/files/fish_plugins
-    dest: /home/gczar/.config/fish/fish_plugins
-    owner: gczar
-    group: gczar
+    src: fish_plugins
+    dest: "{{ local_user_home }}/.config/fish/fish_plugins"
 
-# TODO: Doesn't install new plugins if added to `fish_plugins` file
+- name: Download 'fisher' installation script
+  uri:
+    url: https://git.io/fisher
+    return_content: yes
+    status_code: 200
+  register: fisher_script
+
+- name: Save 'fisher' installation script to file
+  copy:
+    content: "{{ fisher_script.content }}"
+    dest: /tmp/fisher.fish
+
 - name: Install 'fisher'
-  shell: 
-    cmd: |
-      curl -sL https://git.io/fisher | source && \
+  shell:
+    cmd: | 
+      source /tmp/fisher.fish
       fisher update
     executable: /usr/bin/fish
+  become_user: "{{ local_user }}"
+
+- name: Remove 'fisher' installation script
+  file:
+    path: /tmp/fisher.fish
+    state: absent

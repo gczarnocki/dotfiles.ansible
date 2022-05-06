@@ -1,0 +1,15 @@
+---
+- name: Copy 'aliases.fish' file
+  copy:
+    src: aliases.fish
+    dest: "{{ local_user_home }}/.config/fish/aliases.fish"
+    mode: 0744
+    owner: "{{ local_user }}"
+    group: "{{ local_user }}"
+
+- name: Install Fish aliases
+  shell:
+    cmd: |
+      source {{ local_user_home }}/.config/fish/aliases.fish
+    executable: /usr/bin/fish
+  become_user: "{{ local_user }}"

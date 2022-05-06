@@ -1,0 +1,16 @@
+---
+- name: Create '~/.config/fish' directory
+  file:
+    path: "{{ local_user_home }}/.config/fish"
+    state: directory
+    owner: "{{ local_user }}"
+    group: "{{ local_user }}"
+    mode: 0755
+
+- name: Copy 'fish.config' file
+  copy:
+    src: config.fish
+    dest: "{{ local_user_home }}/.config/fish/config.fish"
+    owner: "{{ local_user }}"
+    group: "{{ local_user }}"
+    mode: 0644
