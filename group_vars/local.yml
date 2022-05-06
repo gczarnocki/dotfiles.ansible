@@ -1,0 +1,29 @@
+---
+local_user: gczar
+local_user_home: "/home/{{ local_user }}"
+
+dotfiles_root: "{{ local_user_home }}/.dotfiles"
+
+# 'base' role
+packages_to_install:
+  - dirmngr
+  - curl
+  - fzf
+  - jq
+  - tree
+  - wget
+
+packages_to_remove: []
+
+# 'fish' role
+fisher_packages:
+  - name: andreiborisov/sponge
+    state: present
+  - name: danhper/fish-ssh-agent
+    state: present
+  - name: jethrokuan/z
+    state: present
+  - name: jorgebucaran/fisher
+    state: present
+  - name: jorgebucaran/replay.fish
+    state: present
